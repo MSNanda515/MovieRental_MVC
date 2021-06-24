@@ -48,6 +48,15 @@ namespace MovieRental
 
 
 
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "MoviesByReleaseDate",
+            //        pattern: "movies/released/{year}/{month}", 
+            //        defaults: new { controller = "Movies", action = "ByReleaseDate" },
+            //        constraints: new { year = @"\d{4}", month = @"\d{2}" });
+            //});
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
