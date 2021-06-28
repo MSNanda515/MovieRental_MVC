@@ -5,8 +5,8 @@ namespace MovieRental.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Customer()
-        {
-        }
+        //public bool IsSubscribedToLetter { get; set; }
+        //public MembershipType MembershipTypeCustomer { get; set; }
+        //public byte MembershipTypeCustomerId { get; set; }
     }
 }
