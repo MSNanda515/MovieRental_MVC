@@ -13,6 +13,8 @@ namespace MovieRental.Models
         public bool IsSubscribedToLetter { get; set; }
         public MembershipType MembershipType { get; set; }
         public byte MembershipTypeId { get; set; }
+
+        [Display(Name = "Date of Birth")] // Data annotation to change the label in the view: form
         public DateTime? Birthdate { get; set; }
     }
 }
