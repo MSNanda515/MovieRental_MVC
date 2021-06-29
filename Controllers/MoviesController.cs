@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MovieRental.Models;
+using Microsoft.EntityFrameworkCore;
 using MovieRental.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,11 +13,40 @@ namespace MovieRental.Controllers
 {
     public class MoviesController : Controller
     {
+        private AppDbContext _context;
 
+        public MoviesController()
+        {
+            _context = new AppDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
+        // Get /Movies/
         public IActionResult Index(int? pageIndex, string sortBy)
         {
-            var movies = GetMovies();
+            //var movies = GetMovies();
+            //AddMovies();
+            var movies = _context.Movies.Include(mov => mov.Genre).ToList();
             return View(movies);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var movie = _context.Movies.Include(mov => mov.Genre).SingleOrDefault(mov => mov.Id == id);
+            if (movie == null)
+                return Content("Page not found");
+            return View(movie);
+        }
+
+        private void AddMovies()
+        {
+            Movie mov = new Movie { Id = 1, Name = "Avengers", GenreId = 1, DateAdded = new DateTime(2019, 10, 5), DateReleased = new DateTime(2019, 8, 4), AvailStock = 4, QuantStock = 4 };
+            _context.Movies.Add(mov);
+            _context.SaveChanges();
         }
 
         private IEnumerable<Movie> GetMovies()

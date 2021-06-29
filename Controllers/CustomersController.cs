@@ -39,6 +39,11 @@ namespace MovieRental.Controllers
             return View(customer);
         }
 
+        public IActionResult New()
+        {
+            return View();
+        }
+
         private IEnumerable<Customer> GetCustomers()
         {
             MembershipType m1 = new MembershipType { Id = 1, DiscountRate = 0, DurationMonths = 0, SignUpFee = 0 };
