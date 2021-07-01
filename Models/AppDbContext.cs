@@ -9,7 +9,7 @@ namespace MovieRental.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }
         public DbSet<Movie> Movies { get; set; }
-        //public DbSet<Genre> Genre { get; set; }
+        public DbSet<Genre> Genres { get; set; }
 
         // The following configures EF to create a Sqlite database file as `C:\blogging.db`.
         // For Mac or Linux, change this to `/tmp/blogging.db` or any other absolute path.

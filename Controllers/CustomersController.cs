@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MovieRental.Models;
 using Microsoft.EntityFrameworkCore;
+using MovieRental.Models;
+using MovieRental.ViewModels;
 
 namespace MovieRental.Controllers
 {
@@ -41,7 +42,49 @@ namespace MovieRental.Controllers
 
         public IActionResult New()
         {
-            return View();
+            var membership = _context.MembershipTypes.ToList();
+            var viewModel = new CustomerFormViewModel
+            {
+                MembershipTypes = membership
+            };
+            return View("CustomerForm",viewModel);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            if (customer == null)
+            {
+                return Content("Page not found");
+            }
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = customer,
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+
+            return View("CustomerForm", viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Save(Customer customer)
+        {
+            if (customer.Id == 0)
+            {
+                // new customer
+                _context.Customers.Add(customer);
+
+            }
+            else
+            {
+                var customerInDb = _context.Customers.Single(c => c.Id == customer.Id);
+                customerInDb.Name = customer.Name;
+                customerInDb.Birthdate = customer.Birthdate;
+                customerInDb.MembershipTypeId = customer.MembershipTypeId;
+                customerInDb.IsSubscribedToLetter = customer.IsSubscribedToLetter;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Customers");
         }
 
         private IEnumerable<Customer> GetCustomers()
