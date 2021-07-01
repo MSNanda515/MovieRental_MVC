@@ -7,8 +7,6 @@ using MovieRental.Models;
 using Microsoft.EntityFrameworkCore;
 using MovieRental.ViewModels;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace MovieRental.Controllers
 {
     public class MoviesController : Controller
@@ -40,6 +38,52 @@ namespace MovieRental.Controllers
             if (movie == null)
                 return Content("Page not found");
             return View(movie);
+        }
+
+        /// Action for a new movie form
+        /// Returns IActionResult
+        public IActionResult New()
+        {
+            var Genres = _context.Genres.ToList();
+            var viewModel = new MovieFormViewModel
+            {
+                Genres = Genres,
+                Title = "New Movie"
+            };
+            return View("MoviesForm", viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Save(Movie movie)
+        {
+            if (movie.Id == 0)
+                _context.Add(movie);
+            else
+            {
+                var movieInDb = _context.Movies.Single(mov => mov.Id == movie.Id);
+                movieInDb.Name = movie.Name;
+                movieInDb.DateReleased = movie.DateReleased;
+                movieInDb.GenreId = movie.GenreId;
+                movieInDb.QuantStock = movie.QuantStock;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Movies");
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var movie = _context.Movies.SingleOrDefault(mov => mov.Id == id);
+            if (movie == null)
+            {
+                return Content("Page Not found");
+            }
+            var viewModel = new MovieFormViewModel
+            {
+                Movie = movie,
+                Genres = _context.Genres.ToList(),
+                Title = "Edit Movie"
+            };
+            return View("MoviesForm", viewModel);
         }
 
         private void AddMovies()

@@ -34,4 +34,7 @@
     <PackageReference Include="Identity" Version="1.0.3" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Views\Movies\MovieForm.cshtml" />
+  </ItemGroup>
 </Project>

@@ -17,8 +17,10 @@ namespace MovieRental.Models
 
         public DateTime DateAdded { get; set; }
 
+        [Display(Name = "Release Date")]
         public DateTime DateReleased { get; set; }
 
+        [Display(Name = "Number in Stock")]
         public int QuantStock { get; set; }
 
         public int AvailStock { get; set; }
