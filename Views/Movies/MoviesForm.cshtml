@@ -9,21 +9,32 @@
 @using (Html.BeginForm("Save", "Movies"))
 {
     <div class="form-group">
-        @Html.LabelFor(c => c.Movie.Name)
-        @Html.TextBoxFor(c => c.Movie.Name)
+        @Html.LabelFor(c => c.Name)
+        @Html.TextBoxFor(c => c.Name)
+        @Html.ValidationMessageFor(m => m.Name)
     </div>
     <div class="form-group">
-        @Html.LabelFor(c => c.Movie.DateReleased)
-        @Html.TextBoxFor(c => c.Movie.DateReleased, "{0:d MMM yyyy}")
+        @Html.LabelFor(c => c.DateReleased)
+        @Html.TextBoxFor(c => c.DateReleased, "{0:d MMM yyyy}")
+        @Html.ValidationMessageFor(m => m.DateReleased)
     </div>
     <div class="form-group">
-        @Html.LabelFor(c => c.Movie.GenreId)
-        @Html.DropDownListFor(c => c.Movie.GenreId, new SelectList(Model.Genres, "Id", "Name"), "Select Genre")
+        @Html.LabelFor(c => c.GenreId)
+        @Html.DropDownListFor(c => c.GenreId, new SelectList(Model.Genres, "Id", "Name"), "Select Genre")
+        @Html.ValidationMessageFor(m => m.GenreId)
     </div>
     <div class="form-group">
-        @Html.LabelFor(c => c.Movie.QuantStock)
-        @Html.TextBoxFor(c => c.Movie.QuantStock)
+        @Html.LabelFor(c => c.QuantStock)
+        @Html.TextBoxFor(c => c.QuantStock)
+        @Html.ValidationMessageFor(m => m.QuantStock)
     </div>
-    @Html.HiddenFor(m => m.Movie.Id)
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-primary">Save</button>
+}
+
+
+@section Scripts
+{
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
 }

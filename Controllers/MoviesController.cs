@@ -47,15 +47,26 @@ namespace MovieRental.Controllers
             var Genres = _context.Genres.ToList();
             var viewModel = new MovieFormViewModel
             {
+
                 Genres = Genres,
-                Title = "New Movie"
             };
             return View("MoviesForm", viewModel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Save(Movie movie)
         {
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new MovieFormViewModel(movie)
+                {  
+                    Genres = _context.Genres.ToList(),
+                };
+
+                return View("MoviesForm", viewModel);
+            }
+            
             if (movie.Id == 0)
                 _context.Add(movie);
             else
@@ -77,11 +88,10 @@ namespace MovieRental.Controllers
             {
                 return Content("Page Not found");
             }
-            var viewModel = new MovieFormViewModel
+            var viewModel = new MovieFormViewModel(movie)
             {
-                Movie = movie,
+                
                 Genres = _context.Genres.ToList(),
-                Title = "Edit Movie"
             };
             return View("MoviesForm", viewModel);
         }
