@@ -10,6 +10,8 @@
     <Folder Include="Views\Customers\" />
     <Folder Include="Data\" />
     <Folder Include="Controllers\Api\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="ViewModels\" />
@@ -22,6 +24,10 @@
     <None Remove="Identity" />
     <None Remove="EntityFramework" />
     <None Remove="Controllers\Api\" />
+    <None Remove="Dtos\" />
+    <None Remove="AutoMapper" />
+    <None Remove="App_Start\" />
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
@@ -35,6 +41,8 @@
     </PackageReference>
     <PackageReference Include="Identity" Version="1.0.3" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Movies\MovieForm.cshtml" />

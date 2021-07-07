@@ -76,7 +76,7 @@ namespace MovieRental.Views.Customers.Api
         public void DeleteCustomer(int id)
         {
             var CustomerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
-
+             
             if (CustomerInDb == null)
                 return;
 
