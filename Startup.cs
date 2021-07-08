@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MovieRental.Mappings;
 
 namespace MovieRental
 {
@@ -23,7 +24,7 @@ namespace MovieRental
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(MappingProfile));
             services.AddControllersWithViews();
         }
 
@@ -61,7 +62,7 @@ namespace MovieRental
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
+                    name: "default", 
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }

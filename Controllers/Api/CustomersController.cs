@@ -5,68 +5,80 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MovieRental.Models;
 using System.Web;
+using Microsoft.AspNetCore.Http.Extensions;
+using MovieRental.Dtos;
+using MovieRental.Mappings;
+using AutoMapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MovieRental.Views.Customers.Api
 {
+
+
     [Route("api/customers")]
     public class CustomersController : Controller
     {
+        private readonly IMapper _mapper;
+
+
+
         private AppDbContext _context;
 
-        public CustomersController()
+        public CustomersController(IMapper mapper)
         {
             _context = new AppDbContext();
+            _mapper = mapper;
         }
 
 
         // GET: api/customers
         [HttpGet]
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<CustomerDto > GetCustomers()
         {
-            return _context.Customers.ToList();
+            return _context.Customers.ToList().Select(_mapper.Map<Customer, CustomerDto>);
         }
          
         // GET api/customers/1
         [HttpGet("{id}")]
-        public Customer GetCustomers(int id)
+        public CustomerDto GetCustomers(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
-                return new Customer();
+                return new CustomerDto();
 
-            return customer;
+            return _mapper.Map<Customer, CustomerDto>(customer);
         }
 
         // POST api/customers
         [HttpPost]
-        public Customer CreateCustomer(Customer customer)
+        public IActionResult CreateCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
-                return null;
+                return BadRequest();
+            var customer = _mapper.Map<CustomerDto, Customer>(customerDto);
             _context.Customers.Add(customer);
             _context.SaveChanges();
 
-            return customer;
+            customerDto.Id = customer.Id;
+
+            return Created(new Uri(Request.GetEncodedUrl() + "/" + customer.Id), customer);
         }
 
         // PUT api/customers/5
         [HttpPut("{id}")]
-        public void UpdateCustomer(int id, Customer customer)
+        public void UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
                 return;
 
+            
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customerInDb == null)
                 return;
-            customerInDb.Name = customer.Name;
-            customerInDb.Birthdate = customer.Birthdate;
-            customerInDb.IsSubscribedToLetter = customer.IsSubscribedToLetter;
-            customerInDb.MembershipTypeId = customer.MembershipTypeId;
+            _mapper.Map(customerDto, customerInDb);
 
             _context.SaveChanges();
         }
